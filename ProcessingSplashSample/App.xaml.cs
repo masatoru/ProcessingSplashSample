@@ -26,7 +26,7 @@ namespace ProcessingSplashSample
             //バックグラウンド処理が終わるまで表示して待つ
             ps.ShowDialog();
 
-            if (ps.complete)
+            if (ps.IsComplete)
             {
                 Console.WriteLine("処理が成功した");
             }

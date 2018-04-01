@@ -24,17 +24,17 @@ namespace ProcessingSplashSample
     {
 
         BackgroundWorker _backgroundWorker = new BackgroundWorker();
-        Action action;
-        public bool complete { get; private set; }
-        public bool close { get; private set; }
+        Action ProcessAction;
+        public bool IsComplete { get; private set; }
+        public bool IsClose { get; private set; }
 
-        public ProcessingSplash(string message, Action action)
+        public ProcessingSplash(string message, Action processAction)
         {
             InitializeComponent();
-            this.action = action;
+            this.ProcessAction = processAction;
             DataContext = message;
-            complete = false;
-            close = false;
+            IsComplete = false;
+            IsClose = false;
 
             _backgroundWorker.DoWork += _backgroundWorker_DoWork;
             _backgroundWorker.RunWorkerCompleted += _backgroundWorker_RunWorkerCompleted;
@@ -44,8 +44,8 @@ namespace ProcessingSplashSample
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (action != null)
-                action.Invoke();
+            if (ProcessAction != null)
+                ProcessAction.Invoke();
         }
 
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -54,20 +54,20 @@ namespace ProcessingSplashSample
             if (e.Cancelled)
             {
                 //Cancelled
-                complete = false;
-                close = true;
+                IsComplete = false;
+                IsClose = true;
             }
             else if (e.Error != null)
             {
                 //Exception Thrown
-                complete = false;
-                close = true;
+                IsComplete = false;
+                IsClose = true;
             }
             else
             {
                 //Completed
-                complete = true;
-                close = true;
+                IsComplete = true;
+                IsClose = true;
             }
 
             Dispatcher.Invoke(new Action(() => { this.Close(); }));
@@ -75,7 +75,7 @@ namespace ProcessingSplashSample
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (!close)
+            if (!IsClose)
                 e.Cancel = true;
         }
     }
