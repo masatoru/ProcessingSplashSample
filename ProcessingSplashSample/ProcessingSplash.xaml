@@ -14,8 +14,9 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ProgressBar
             x:Name="progressbar"
@@ -23,12 +24,12 @@
             Height="20"
             Margin="10,15,10,5"
             HorizontalAlignment="Stretch"
-            IsIndeterminate="True" VerticalAlignment="Center" />
+            VerticalAlignment="Center" />
         <Label
-            x:Name="label_status"
+            x:Name="status"
             Grid.Row="1"
             HorizontalAlignment="Center"
             Content="{Binding}" />
-        <Button Click="ButtonCancelOnClick" Content="キャンセル" HorizontalAlignment="Left" Margin="22,16.667,0,-5.333" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+        <Button Click="ButtonCancelOnClick" Content="キャンセル" Grid.Row="2" Width="75"/>
     </Grid>
 </Window>

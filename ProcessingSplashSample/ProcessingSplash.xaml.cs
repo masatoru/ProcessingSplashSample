@@ -49,6 +49,13 @@ namespace ProcessingSplashSample
                 var num = (int) e.Argument;
                 for (var m = 0; m < num; m++)
                 {
+                    Dispatcher.Invoke(() =>
+                    {
+                        progressbar.Maximum = num;
+                        progressbar.Value = m + 1;
+                        status.Content = $"処理中 {m+1}/{num}";
+                    });
+
                     ProcessAction.Invoke();
 
                     // キャンセルされてないか定期的にチェック
