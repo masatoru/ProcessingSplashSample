@@ -19,7 +19,7 @@ namespace ProcessingSplashSample
             var lst = new[] {"aaaaa.txt", "bbbbb.txt", "ccccc.txt", "ddddd.txt", "eeeee.txt"};
             ProcessingSplash ps = new ProcessingSplash("Initializing", (path) =>
             {
-                //ここで重い処理を処理させる
+                //ここで1回ごとの処理を定義する
                 System.Threading.Thread.Sleep(1000);
             },lst.ToList());
 
