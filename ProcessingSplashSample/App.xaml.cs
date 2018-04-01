@@ -16,11 +16,12 @@ namespace ProcessingSplashSample
     {
         public App()
         {
-            ProcessingSplash ps = new ProcessingSplash("Initializing", () =>
+            var lst = new[] {"aaaaa.txt", "bbbbb.txt", "ccccc.txt", "ddddd.txt", "eeeee.txt"};
+            ProcessingSplash ps = new ProcessingSplash("Initializing", (path) =>
             {
                 //ここで重い処理を処理させる
                 System.Threading.Thread.Sleep(1000);
-            },5/*5回*/);
+            },lst.ToList());
 
             // バックグラウンド処理が終わるまで表示して待つ
             ps.ShowDialog();

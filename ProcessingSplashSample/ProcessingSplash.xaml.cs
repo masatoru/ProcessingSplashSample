@@ -24,14 +24,15 @@ namespace ProcessingSplashSample
     {
 
         BackgroundWorker _backgroundWorker = new BackgroundWorker();
-        Action ProcessAction;
+//        Action ProcessAction;
+        Action<string> ProcessFunc;
         public bool IsComplete { get; private set; }
         public bool IsClose { get; private set; }
 
-        public ProcessingSplash(string message, Action processAction,int num)
+        public ProcessingSplash(string message, Action<string> processFunc,List<string> lst)
         {
             InitializeComponent();
-            this.ProcessAction = processAction;
+            this.ProcessFunc = processFunc;
             DataContext = message;
             IsComplete = false;
             IsClose = false;
@@ -39,24 +40,24 @@ namespace ProcessingSplashSample
             _backgroundWorker.DoWork += _backgroundWorker_DoWork;
             _backgroundWorker.RunWorkerCompleted += _backgroundWorker_RunWorkerCompleted;
             _backgroundWorker.WorkerSupportsCancellation = true;
-            _backgroundWorker.RunWorkerAsync(num);
+            _backgroundWorker.RunWorkerAsync(lst);
         }
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (ProcessAction != null)
+            if (ProcessFunc != null)
             {
-                var num = (int) e.Argument;
-                for (var m = 0; m < num; m++)
+                var lst = (List<string>) e.Argument;
+                foreach (var path in lst.Select((v,i) => new{v,i}))
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        progressbar.Maximum = num;
-                        progressbar.Value = m + 1;
-                        status.Content = $"処理中 {m+1}/{num}";
+                        progressbar.Maximum = lst.Count;
+                        progressbar.Value = path.i + 1;
+                        status.Content = $"{path.i+1}/{lst.Count}:{path.v}";
                     });
 
-                    ProcessAction.Invoke();
+                    ProcessFunc.Invoke("a");
 
                     // キャンセルされてないか定期的にチェック
                     if (_backgroundWorker.CancellationPending)
