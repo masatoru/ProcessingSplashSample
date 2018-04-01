@@ -24,7 +24,6 @@ namespace ProcessingSplashSample
     {
 
         BackgroundWorker _backgroundWorker = new BackgroundWorker();
-//        Action ProcessAction;
         Action<string> ProcessFunc;
         public bool IsComplete { get; private set; }
         public bool IsClose { get; private set; }
