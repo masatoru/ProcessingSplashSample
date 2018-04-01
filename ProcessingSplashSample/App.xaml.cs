@@ -19,11 +19,10 @@ namespace ProcessingSplashSample
             ProcessingSplash ps = new ProcessingSplash("Initializing", () =>
             {
                 //ここで重い処理を処理させる
-                System.Threading.Thread.Sleep(3000);
-            });
+                System.Threading.Thread.Sleep(1000);
+            },5/*5回*/);
 
-            Console.WriteLine("ShowDialog 1");
-            //バックグラウンド処理が終わるまで表示して待つ
+            // バックグラウンド処理が終わるまで表示して待つ
             ps.ShowDialog();
 
             if (ps.IsComplete)

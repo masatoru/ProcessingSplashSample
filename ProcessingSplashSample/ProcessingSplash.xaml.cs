@@ -28,7 +28,7 @@ namespace ProcessingSplashSample
         public bool IsComplete { get; private set; }
         public bool IsClose { get; private set; }
 
-        public ProcessingSplash(string message, Action processAction)
+        public ProcessingSplash(string message, Action processAction,int num)
         {
             InitializeComponent();
             this.ProcessAction = processAction;
@@ -39,18 +39,30 @@ namespace ProcessingSplashSample
             _backgroundWorker.DoWork += _backgroundWorker_DoWork;
             _backgroundWorker.RunWorkerCompleted += _backgroundWorker_RunWorkerCompleted;
             _backgroundWorker.WorkerSupportsCancellation = true;
-            _backgroundWorker.RunWorkerAsync();
+            _backgroundWorker.RunWorkerAsync(num);
         }
 
         private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             if (ProcessAction != null)
-                ProcessAction.Invoke();
+            {
+                var num = (int) e.Argument;
+                for (var m = 0; m < num; m++)
+                {
+                    ProcessAction.Invoke();
+
+                    // キャンセルされてないか定期的にチェック
+                    if (_backgroundWorker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+                }
+            }
         }
 
         private void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _backgroundWorker.CancelAsync();
             if (e.Cancelled)
             {
                 //Cancelled
@@ -77,6 +89,16 @@ namespace ProcessingSplashSample
         {
             if (!IsClose)
                 e.Cancel = true;
+        }
+
+        /// <summary>
+        /// キャンセル処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonCancelOnClick(object sender, RoutedEventArgs e)
+        {
+            _backgroundWorker.CancelAsync();
         }
     }
 }
