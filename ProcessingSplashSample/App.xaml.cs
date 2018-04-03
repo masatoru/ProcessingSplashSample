@@ -16,12 +16,16 @@ namespace ProcessingSplashSample
     {
         public App()
         {
-            var lst = new[] {"aaaaa.txt", "bbbbb.txt", "ccccc.txt", "ddddd.txt", "eeeee.txt"};
+        }
+
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            var lst = new[] { "aaaaa.txt", "bbbbb.txt", "ccccc.txt", "ddddd.txt", "eeeee.txt" };
             ProcessingSplash ps = new ProcessingSplash("Initializing", (path) =>
             {
                 //ここで1回ごとの処理を定義する
                 System.Threading.Thread.Sleep(1000);
-            },lst.ToList());
+            }, lst.ToList());
 
             // バックグラウンド処理が終わるまで表示して待つ
             ps.ShowDialog();
