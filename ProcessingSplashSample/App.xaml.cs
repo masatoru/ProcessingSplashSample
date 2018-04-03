@@ -32,11 +32,11 @@ namespace ProcessingSplashSample
 
             if (ps.IsComplete)
             {
-                Console.WriteLine("処理が成功した");
+                MessageBox.Show("処理が成功した");
             }
             else
             {
-                Console.WriteLine("処理が失敗した");
+                MessageBox.Show("処理が失敗した");
             }
         }
     }
